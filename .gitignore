@@ -1,0 +1,13 @@
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.ipynb_checkpoints/
+.env
+*.pcap
+*.pcapng
+datasets/
+*.pkl
+*.joblib
+*.pt
+*.pth
