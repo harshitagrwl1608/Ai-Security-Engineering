@@ -4,7 +4,7 @@ A hands-on learning repository following the **AI Security Engineer Curriculum v
 
 The goal is to progress from Python foundations through machine learning, adversarial ML, deep learning, LLMs, agentic systems, and AI application security—by building, testing, documenting, and evaluating practical projects.
 
-> This repository is a learning workspace. Exercises use synthetic data unless a dataset is explicitly documented as permitted for use. It is not a production security tool.
+> This is a public learning workspace. It contains original exercises and synthetic-data experiments. Assessed CS50P problem-set solutions are intentionally excluded.
 
 ## Learning path
 
@@ -24,17 +24,25 @@ The curriculum is planned as 31 calendar weeks, including four dedicated slack/r
 AI-Security-Engineering/
 ├── phase-01-python/
 │   ├── week-01/
+│   │   ├── session-01/
+│   │   ├── session-02/
+│   │   ├── session-03/
+│   │   ├── session-04/
+│   │   └── session-05/
 │   ├── week-02/
+│   │   └── session/
 │   └── ...
 ├── documentation/
+│   ├── archives/
+│   ├── decisions/
 │   ├── learning-journal/
-│   ├── weekly-reports/
-│   └── decisions/
+│   ├── security/
+│   └── weekly-reports/
 ├── requirements.txt
 └── .gitignore
 ```
 
-The structure will expand as the curriculum progresses. Weekly exercises are kept separate from finished portfolio projects.
+Exercises are grouped by curriculum week and session. New folders and files use lowercase names and zero-padded session numbers. Historical exercise content is retained when paths are normalized.
 
 ## Getting started
 
@@ -64,13 +72,14 @@ source .venv/bin/activate
 
 ### Run an exercise
 
-Run a Python file from the repository root using its relative path. For example:
+Run a Python file from the repository root using its relative path. Examples:
 
 ```bash
-python phase-01-python/week-01/session-03/ip_counter_and_validator.py
+python phase-01-python/week-01/session-04/ip_counter_and_validator.py
+python phase-01-python/week-02/session/cli_v2.py
 ```
 
-Use the path that matches the exercise file in your local checkout.
+Some exercises import sibling modules. Run them from the documented working directory or configure the project root on the Python path.
 
 ## Development and security practices
 
@@ -78,17 +87,17 @@ Use the path that matches the exercise file in your local checkout.
 - Keep functions focused and reusable. Separate reusable logic from demonstration or command-line entry points.
 - Use `if __name__ == "__main__":` to guard code that should run only when a module is executed directly.
 - Test normal inputs, boundary cases, malformed inputs, and empty inputs.
-- Treat log contents and other external input as untrusted data. Do not use `eval`, `exec`, unsafe pickle loading, or shell execution on untrusted input.
+- Treat log contents and other external input as untrusted data. Never pass log content to `eval`, `exec`, unsafe deserialization, or shell execution.
 - Never commit passwords, API keys, access tokens, raw PCAP files, private data, or large datasets.
-- Keep assessed CS50P submissions in the appropriate CS50 submission workflow; do not publish CS50 problem-set solutions in this repository.
+- Do not publish CS50P problem-set or assessment solutions in this public repository.
 
 ## Current progress
 
 | Area | Status |
 |---|---|
 | Python environment and project setup | Completed |
-| Week 1 — Python fundamentals and security exercises | Completed |
-| Week 2 — Control flow and collections | In progress |
+| Week 1 — Python fundamentals and security exercises | Completed (reported) |
+| Week 2 — Control flow, collections and 1,000-event processing | Core exercises implemented; final gate pending |
 | Later curriculum phases | Not started |
 
 Progress is updated as weekly deliverables and assessment gates are completed.
@@ -98,8 +107,9 @@ Progress is updated as weekly deliverables and assessment gates are completed.
 - Learning notes: `documentation/learning-journal/`
 - Weekly reports: `documentation/weekly-reports/`
 - Technical decisions: `documentation/decisions/`
+- Security notes: `documentation/security/`
 
-Each weekly report records planned versus completed objectives, deliverables, tests, difficulties, and next priorities.
+Each weekly report distinguishes completed work, learner-reported results, independently verified checks, and remaining gaps.
 
 ## Tools used
 

@@ -32,7 +32,7 @@
 
 ## 3. Practical deliverables
 
-- `phase-01-python/week-01/security_event.py`
+- `phase-01-python/week-01/session-01/security_event.py`
 - `phase-01-python/week-01/session-02/exercises/` — five small exercises
 - `phase-01-python/week-01/session-02/helpers.py`
 - `phase-01-python/week-01/session-02/use_helpers.py`
