@@ -19,7 +19,7 @@
 | Count event types and failed logins | Implemented | `event_counter.py` counts event categories and failed logins. Its timer now starts after generation and surrounds the counting loop. |
 | Measure processing time | Fresh measurement pending | The previously reported 0.004098-second reading included generation under the earlier timer placement. Re-run the updated script and record the new result. |
 | Build CLI v2 summary, filtering, sorting and grouping | Implemented; local acceptance run pending | `cli_v2.py` contains the four features. Output is limited to samples and group counts to avoid dumping all 1,000 records. Verify grouping conservation locally. |
-| Complete the untrusted-log-input security note | Documented | See `documentation/security/untrusted-log-input.md`. |
+| Add the untrusted-log-input security note | Added as a reference note during repository maintenance | See `documentation/security/untrusted-log-input.md`; learner review and personal takeaway remain pending. |
 | Complete Week 2 report | Completed | This report. |
 | Pass the Week 1–2 Sunday gate | Pending | Three unseen problems, a closed-book rebuild, test run, and honest skill assessment remain. |
 
@@ -52,22 +52,38 @@ Log files and event fields must be treated as untrusted data. Do not interpret l
 
 ## 5. Verification and limitations
 
-- The generator source creates exactly 1,000 event dictionaries and fixes the random seed.
-- The CLI source includes summary, filtering, severity sorting, and grouping.
-- Verify grouping by checking that the sum of all group lengths equals the original event count.
-- Verify filtering for all three accepted severities and for invalid input.
-- Verify sorting puts high before medium before low and preserves all records.
+### Isolated branch smoke test
+
+The revised generator, counter, iterator, and CLI code were run in an isolated Python environment during this repository update. These checks are not a substitute for running the files on the learner's laptop, and they are not a committed pytest suite.
+
+| Check | Observed result |
+|---|---:|
+| Generated records | 1,000 |
+| Reproducibility across two generator calls | Identical event lists |
+| High / medium / low severity | 331 / 358 / 311 |
+| Failed login events | 188 |
+| Unique source IPs | 4 |
+| High-severity filter result | 331 records |
+| Grouped record conservation | 1,000 / 1,000 records |
+| For-loop / while-loop failed-login count on sample | 3 / 3 |
+
+The event-type counter observed 214 ARP Spoof, 188 Failed Login, 209 Port Scan, 197 Successful Login, and 192 Suspicious Connection records (1,000 total).
+
+### Limitations
+
 - No automated pytest suite for these Week 2 functions is currently committed.
-- A processing-time result from the updated timer has not yet been recorded.
+- A fresh processing-time result from the updated timer has not yet been recorded on the learner's machine.
+- The learner's earlier 0.004098-second measurement used a version whose timer began before event generation; it includes generation and should not be presented as processing-only time.
 - This synthetic in-memory exercise is not a packet-processing or production IDS benchmark.
 
 ## 6. Remaining work
 
-1. Run `python phase-01-python/week-02/session/cli_v2.py` locally and record its output and grouping conservation count.
+1. Run `python phase-01-python/week-02/session/cli_v2.py` on the learner's machine and compare its output with the isolated smoke-test counts.
 2. Run `python phase-01-python/week-02/session/event_counter.py` locally and record the updated processing-only time.
-3. Add focused tests for classifier boundaries, filtering, sort order, grouping conservation, and generator reproducibility.
-4. Complete Session 8: solve three unseen problems unaided, rebuild one tool without notes, run the available tests, explain a collection choice, and record honest skill levels.
-5. Update this report with exact local command output and actual time spent after verification.
+3. Review `documentation/security/untrusted-log-input.md` and add a short personal takeaway in the learning journal.
+4. Add focused tests for classifier boundaries, filtering, sort order, grouping conservation, and generator reproducibility.
+5. Complete Session 8: solve three unseen problems unaided, rebuild one tool without notes, run the available tests, explain a collection choice, and record honest skill levels.
+6. Update this report with exact local command output and actual time spent after verification.
 
 ---
 
