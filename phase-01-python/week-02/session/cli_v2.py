@@ -1,85 +1,99 @@
 from random_data_generator import random_generator
-events = random_generator()
+
+
 def report_generate(events):
-    c=0
-    d=0
-    e=0
-    f=0
-    unique_ip=[]
-    for i in events:
-        if(i["severity"]=="high"):
-            c=c+1
-        elif(i["severity"]=="medium"):
-            d=d+1
-        elif(i["severity"]=="low"):
-            e=e+1
-        else: 
-            print("Invalid severity")
+    severity_counts = {"high": 0, "medium": 0, "low": 0}
+    failed_login_count = 0
+    unique_ips = set()
+    invalid_severity_count = 0
 
-        if(i["event"]=="Failed Login"):
-            f=f+1
+    for event in events:
+        severity = event["severity"]
 
-        if(i["source_ip"] not in unique_ip):
-            unique_ip.append(i["source_ip"])
-        """unique_ips = set()
-            unique_ips.add(i["source_ip"])"""
+        if severity in severity_counts:
+            severity_counts[severity] += 1
+        else:
+            invalid_severity_count += 1
+
+        if event["event"] == "Failed Login":
+            failed_login_count += 1
+
+        unique_ips.add(event["source_ip"])
 
     print("========== NETGUARD CLI V2 ==========")
-    print()
-    print("Total Events :",len(events))
-    print("\n Severity Summary :")
-    print("High severity:",c)
-    print("medium severity:",d)
-    print("low severity",e)
-    print()
-    print("Failed Login attempts:",f)
-    print("Number of uniques IPs:",len(unique_ip))
-    print("====================================")
+    print(f"Total events: {len(events)}")
+    print("\nSeverity summary:")
+    for severity in ("high", "medium", "low"):
+        print(f"{severity.title()}: {severity_counts[severity]}")
+
+    print(f"Failed logins: {failed_login_count}")
+    print(f"Unique source IPs: {len(unique_ips)}")
+    if invalid_severity_count:
+        print(f"Alerts with invalid severity: {invalid_severity_count}")
+    print("=====================================")
+
 
 def filter_by_severity(events, target_severity):
-    list_severity=[]
-    for i in events:
-        if(i["severity"]==target_severity):
-            list_severity.append(i)
-    return list_severity
+    target_severity = target_severity.strip().lower()
+    return [
+        event for event in events
+        if event["severity"] == target_severity
+    ]
+
 
 def sort_by_severity(events):
-    severity_rank = {
-        "high": 1,
-        "medium": 2,
-        "low": 3
-        }
-    ranked_alerts = sorted(
+    severity_rank = {"high": 1, "medium": 2, "low": 3}
+    return sorted(
         events,
-        key=lambda item: (severity_rank[item["severity"]])
-        )
-    return ranked_alerts
+        key=lambda event: severity_rank.get(event["severity"], 99)
+    )
+
 
 def group_by_ip(events):
-    group_list={}
-    for i in events:
-        if i["source_ip"] in group_list:
-            group_list[i["source_ip"]].append(i)
-        else:
-            group_list[i["source_ip"]] = []
-            group_list[i["source_ip"]].append(i)
-    return group_list
+    grouped = {}
+
+    for event in events:
+        source_ip = event["source_ip"]
+
+        if source_ip not in grouped:
+            grouped[source_ip] = []
+
+        grouped[source_ip].append(event)
+
+    return grouped
+
 
 def main():
+    events = random_generator()
     report_generate(events)
-    
-    target_severity=input("Enter the severity for which event logs you want : ").strip().lower()
-    list_severity=filter_by_severity(events,target_severity)
-    print(f"\nThe list for {target_severity} is\n: {list_severity}")
 
-    ranked_by_severity=sort_by_severity(events)
-    print("\nSeverity Ranked\n",ranked_by_severity)
+    target_severity = input(
+        "\nEnter the severity to filter (low/medium/high): "
+    ).strip().lower()
 
-    group_by_ip_list=group_by_ip(events)
-    print("\nGroup by IP list\n",group_by_ip_list)
+    if target_severity not in ("low", "medium", "high"):
+        print("Invalid severity. Choose low, medium, or high.")
+    else:
+        filtered_events = filter_by_severity(events, target_severity)
+        print(f"\nMatching {target_severity} alerts: {len(filtered_events)}")
+        for event in filtered_events[:5]:
+            print(event)
+        if len(filtered_events) > 5:
+            print(f"... and {len(filtered_events) - 5} more")
 
-    
+    ranked_events = sort_by_severity(events)
+    print("\nFirst 10 alerts ranked by severity:")
+    for event in ranked_events[:10]:
+        print(event)
 
-if __name__=="__main__":
+    grouped_events = group_by_ip(events)
+    print("\nAlerts per source IP:")
+    for source_ip, alerts in grouped_events.items():
+        print(f"{source_ip}: {len(alerts)} alerts")
+
+    grouped_total = sum(len(alerts) for alerts in grouped_events.values())
+    print(f"\nGrouping validation: {grouped_total}/{len(events)} events accounted for")
+
+
+if __name__ == "__main__":
     main()
-

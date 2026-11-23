@@ -32,7 +32,7 @@
 
 ## 3. Practical deliverables
 
-- `phase-01-python/week-01/security_event.py`
+- `phase-01-python/week-01/session-01/security_event.py`
 - `phase-01-python/week-01/session-02/exercises/` — five small exercises
 - `phase-01-python/week-01/session-02/helpers.py`
 - `phase-01-python/week-01/session-02/use_helpers.py`
@@ -40,9 +40,9 @@
 - `phase-01-python/week-01/session-04/ip_counter.py`
 - `phase-01-python/week-01/session-04/ip_validator.py`
 - `phase-01-python/week-01/session-04/ip_counter_and_validator.py`
-- `phase-01-python/week-01/session-05/alert_cli.py`
+- `phase-01-python/week-01/session-05/basic_cli.py`
 
-Adjust the paths above to match the actual filenames and locations in the local workspace.
+The paths above reflect the repository structure after the Week 1 session-folder normalization.
 
 ## 4. Tests and results
 
